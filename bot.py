@@ -76,6 +76,9 @@ if __name__ == "__main__":
     
     print("[SYSTEM ACTIVE] 24/7 Gold Pure SMC Engine is fully live...")
     
+    # --- AUTOMATED TEST LINE ON STARTUP ---
+    send_telegram_alert({"type": "BUY", "entry": 2350.00, "sl": 2340.00, "tp": 2370.00})
+    
     while True:
         current_time = time.time()
         signal = analyze_pure_smc()
