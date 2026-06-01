@@ -13,9 +13,9 @@ def run_dummy_server():
     server.serve_forever()
 
 # --- CONFIGURATION ---
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
-DATA_API_KEY = os.getenv("DATA_API_KEY")
+TELEGRAM_TOKEN = os.getenv("8800901257:AAGIdo3oapkDQ7DOUAuTZDjGVbwpQ-ILIPU")
+CHAT_ID = os.getenv("7516906974")
+DATA_API_KEY = os.getenv("tmhYlilP8hWomj37ZQK7Jg63zgUjOh9g")
 
 last_signal_time = 0 
 last_signal_type = None
