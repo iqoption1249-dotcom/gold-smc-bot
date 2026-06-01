@@ -2,8 +2,17 @@ import os
 import time
 import requests
 import pandas as pd
+from threading import Thread
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 
-# --- CONFIGURATION (Secure Cloud Setup) ---
+# --- SILENT WEB SERVER TO SATISFY RENDER FREE CHECK ---
+def run_dummy_server():
+    port = int(os.getenv("PORT", 10000))
+    server = HTTPServer(('0.0.0.0', port), SimpleHTTPRequestHandler)
+    print(f"[PORT BIND] Satisfying Render port scan on port {port}")
+    server.serve_forever()
+
+# --- CONFIGURATION ---
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 DATA_API_KEY = os.getenv("DATA_API_KEY")
@@ -62,6 +71,11 @@ def send_telegram_alert(signal):
     requests.post(url, json={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
 
 if __name__ == "__main__":
+    # Start the dummy port server in a background thread to keep Render happy
+    Thread(target=run_dummy_server, daemon=True).start()
+    
+    print("[SYSTEM ACTIVE] 24/7 Gold Pure SMC Engine is fully live...")
+    
     while True:
         current_time = time.time()
         signal = analyze_pure_smc()
