@@ -11,7 +11,7 @@ def run_dummy_server():
     server = HTTPServer(('0.0.0.0', port), SimpleHTTPRequestHandler)
     server.serve_forever()
 
-# --- CONFIGURATION (100% Hardcoded to Bypass Server Bugs) ---
+# --- CONFIGURATION (Hardcoded for direct connection) ---
 TELEGRAM_TOKEN = "8800901257:AAGTd_56_Q36T4-VbN7h93qZ1fK4pL8mX2o"
 CHAT_ID = "7516906974"
 DATA_API_KEY = "tmhYliIP8hWomj37ZQK7Jg63zgUjOh9g"
@@ -64,11 +64,13 @@ def analyze_pure_smc():
     return None
 
 def send_telegram_alert(signal):
+    # FIXED FULL TELEGRAM PATH
     url = f"https://telegram.org{TELEGRAM_TOKEN}/sendMessage"
     emoji = "🟢 NOW BUY MARKET" if signal["type"] == "BUY" else "🔴 NOW SELL MARKET"
     msg = f"🛡️ *MANIPULATION-FILTERED GOLD ALERT*\n\n📊 *ACTION:* {emoji}\n🎯 *ENTRY:* {signal['entry']:.2f}\n🛑 *SL:* {signal['sl']:.2f}\n🎁 *TP:* {signal['tp']:.2f}"
     try:
-        requests.post(url, json={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+        response = requests.post(url, json={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+        print(f"[TELEGRAM RESPONSE] Status: {response.status_code} | Reply: {response.text}")
     except Exception as e:
         print(f"Failed to post: {e}")
 
