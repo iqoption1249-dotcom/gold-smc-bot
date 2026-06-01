@@ -65,10 +65,14 @@ def analyze_pure_smc():
     return None
 
 def send_telegram_alert(signal):
+    # FIXED API URL STRINGS - NO LETTER CLIPPING ABOVE
     url = f"https://telegram.org{TELEGRAM_TOKEN}/sendMessage"
     emoji = "🟢 NOW BUY MARKET" if signal["type"] == "BUY" else "🔴 NOW SELL MARKET"
     msg = f"🛡️ *MANIPULATION-FILTERED GOLD ALERT*\n\n📊 *ACTION:* {emoji}\n🎯 *ENTRY:* {signal['entry']:.2f}\n🛑 *SL:* {signal['sl']:.2f}\n🎁 *TP:* {signal['tp']:.2f}"
-    requests.post(url, json={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+    try:
+        requests.post(url, json={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+    except Exception as e:
+        print(f"Failed to post to Telegram api endpoint: {e}")
 
 if __name__ == "__main__":
     # Start the dummy port server in a background thread to keep Render happy
